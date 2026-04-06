@@ -66,5 +66,30 @@ class EC2Manager:
             print(f"❌ Error al terminar instancia {instance_id}: {e}")
             return False
 
+def main():
+    parser = argparse.ArgumentParser(description='Gestionar instancias EC2')
+    parser.add_argument('accion', choices=['listar', 'iniciar', 'detener', 'terminar'],
+                       help='Acción a realizar')
+    parser.add_argument('--instance-id', help='ID de la instancia EC2')
+    parser.add_argument('--region', default='us-east-1', help='Región de AWS')
+    
+    args = parser.parse_args()
+    
+    manager = EC2Manager(region=args.region)
+    
+    if args.accion == 'listar':
+        manager.listar_instancias()
+    elif args.accion in ['iniciar', 'detener', 'terminar']:
+        if not args.instance_id:
+            print("❌ Se requiere --instance-id para esta acción")
+            sys.exit(1)
+        
+        if args.accion == 'iniciar':
+            manager.iniciar_instancia(args.instance_id)
+        elif args.accion == 'detener':
+            manager.detener_instancia(args.instance_id)
+        elif args.accion == 'terminar':
+            manager.terminar_instancia(args.instance_id)
+
 if __name__ == "__main__":
     print("Script EC2 - Estructura inicial")
