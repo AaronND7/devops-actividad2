@@ -35,6 +35,16 @@ class EC2Manager:
             print(f"Error al listar instancias: {e}")
             return False
         return True
+    
+    def iniciar_instancia(self, instance_id):
+        """Iniciar una instancia EC2"""
+        try:
+            response = self.ec2_client.start_instances(InstanceIds=[instance_id])
+            print(f"✅ Instancia {instance_id} iniciada correctamente")
+            return True
+        except Exception as e:
+            print(f"❌ Error al iniciar instancia {instance_id}: {e}")
+            return False
 
 if __name__ == "__main__":
     print("Script EC2 - Estructura inicial")
