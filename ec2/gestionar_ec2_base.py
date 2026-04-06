@@ -92,4 +92,4 @@ def main():
             manager.terminar_instancia(args.instance_id)
 
 if __name__ == "__main__":
-    print("Script EC2 - Estructura inicial")
+    main()
