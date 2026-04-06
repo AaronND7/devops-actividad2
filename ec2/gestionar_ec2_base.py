@@ -45,6 +45,26 @@ class EC2Manager:
         except Exception as e:
             print(f"❌ Error al iniciar instancia {instance_id}: {e}")
             return False
+    
+    def detener_instancia(self, instance_id):
+        """Detener una instancia EC2"""
+        try:
+            response = self.ec2_client.stop_instances(InstanceIds=[instance_id])
+            print(f"✅ Instancia {instance_id} detenida correctamente")
+            return True
+        except Exception as e:
+            print(f"❌ Error al detener instancia {instance_id}: {e}")
+            return False
+    
+    def terminar_instancia(self, instance_id):
+        """Terminar una instancia EC2"""
+        try:
+            response = self.ec2_client.terminate_instances(InstanceIds=[instance_id])
+            print(f"✅ Instancia {instance_id} terminada correctamente")
+            return True
+        except Exception as e:
+            print(f"❌ Error al terminar instancia {instance_id}: {e}")
+            return False
 
 if __name__ == "__main__":
     print("Script EC2 - Estructura inicial")
