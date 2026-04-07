@@ -76,3 +76,63 @@ ejecutar_backup_s3() {
         return 1
     fi
 }
+
+# Función para validar parámetros
+validar_parametros() {
+    if [ $# -lt 2 ]; then
+        log "ERROR: Se requieren al menos 2 parámetros"
+        echo "Uso: $0 <accion-ec2> <instance-id> [directorio] [bucket-s3]"
+        exit 1
+    fi
+    
+    log "✅ Parámetros validados correctamente"
+}
+
+# Función principal
+main() {
+    log "🚀 Iniciando proceso de deploy - CI/CD Simulado"
+    log "Parámetros recibidos: $*"
+    
+    # Cargar configuración si existe
+    CONFIG_FILE="config/config.env"
+    cargar_configuracion
+    
+    # Establecer valores por defecto si no están en config
+    REGION=${REGION:-"us-east-1"}
+    
+    # Validar parámetros
+    validar_parametros "$@"
+    
+    # Parámetros
+    ACCION_EC2=$1
+    INSTANCE_ID=$2
+    DIRECTORIO=${3:-$DIRECTORY}
+    BUCKET=${4:-$BUCKET_NAME}
+    
+    # Ejecutar operación EC2
+    log "🔄 Etapa 1: Gestión EC2"
+    if ! ejecutar_ec2 "$ACCION_EC2" "$INSTANCE_ID"; then
+        log "❌ Deploy fallido en etapa EC2"
+        exit 1
+    fi
+    
+    # Si se proporcionaron directorio y bucket, ejecutar backup
+    if [ -n "$DIRECTORIO" ] && [ -n "$BUCKET" ]; then
+        log "🔄 Etapa 2: Backup S3"
+        if ! ejecutar_backup_s3 "$DIRECTORIO" "$BUCKET"; then
+            log "❌ Deploy fallido en etapa de backup"
+            exit 1
+        fi
+    else
+        log "ℹ️  No se ejecutó backup (faltan parámetros directorio/bucket)"
+    fi
+    
+    log "🎉 Deploy completado exitosamente"
+    log "✅ Flujo DevOps completado: Feature → Commit → Push → Merge → Deploy → AWS"
+}
+
+# Crear directorio de logs si no existe
+mkdir -p logs
+
+# Ejecutar función principal con todos los argumentos
+main "$@"
