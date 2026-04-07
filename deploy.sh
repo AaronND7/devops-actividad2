@@ -6,7 +6,6 @@
 # Variables
 LOG_FILE="logs/deploy_$(date +%Y%m%d_%H%M%S).log"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-CONFIG_FILE="config/config.env"
 
 # Función para logging
 log() {
@@ -24,28 +23,6 @@ cargar_configuracion() {
         log "⚠️  Archivo de configuración no encontrado, usando parámetros de línea de comandos"
         return 1
     fi
-}
-
-# Función para validar parámetros
-validar_parametros() {
-    if [ $# -lt 2 ]; then
-        log "ERROR: Se requieren al menos 2 parámetros"
-        echo "Uso: $0 <accion-ec2> <instance-id> [directorio] [bucket-s3]"
-        echo ""
-        echo "Acciones EC2 disponibles:"
-        echo "  listar      - Lista todas las instancias EC2"
-        echo "  iniciar     - Inicia una instancia EC2"
-        echo "  detener     - Detiene una instancia EC2"
-        echo "  terminar    - Termina una instancia EC2"
-        echo ""
-        echo "Ejemplos:"
-        echo "  $0 listar"
-        echo "  $0 iniciar i-1234567890abcdef0 ./data mi-bucket-devops"
-        echo "  $0 detener i-1234567890abcdef0"
-        exit 1
-    fi
-    
-    log "✅ Parámetros validados correctamente"
 }
 
 # Función para ejecutar script EC2
@@ -100,17 +77,15 @@ ejecutar_backup_s3() {
     fi
 }
 
-# Función para mostrar resumen
-mostrar_resumen() {
-    log "📊 RESUMEN DE EJECUCIÓN"
-    log "========================"
-    log "Timestamp: $TIMESTAMP"
-    log "Acción EC2: $1"
-    log "Instance ID: $2"
-    log "Directorio: $3"
-    log "Bucket S3: $4"
-    log "Log file: $LOG_FILE"
-    log "========================"
+# Función para validar parámetros
+validar_parametros() {
+    if [ $# -lt 2 ]; then
+        log "ERROR: Se requieren al menos 2 parámetros"
+        echo "Uso: $0 <accion-ec2> <instance-id> [directorio] [bucket-s3]"
+        exit 1
+    fi
+    
+    log "✅ Parámetros validados correctamente"
 }
 
 # Función principal
@@ -119,6 +94,7 @@ main() {
     log "Parámetros recibidos: $*"
     
     # Cargar configuración si existe
+    CONFIG_FILE="config/config.env"
     cargar_configuracion
     
     # Establecer valores por defecto si no están en config
@@ -150,9 +126,6 @@ main() {
     else
         log "ℹ️  No se ejecutó backup (faltan parámetros directorio/bucket)"
     fi
-    
-    # Mostrar resumen
-    mostrar_resumen "$ACCION_EC2" "$INSTANCE_ID" "$DIRECTORIO" "$BUCKET"
     
     log "🎉 Deploy completado exitosamente"
     log "✅ Flujo DevOps completado: Feature → Commit → Push → Merge → Deploy → AWS"
