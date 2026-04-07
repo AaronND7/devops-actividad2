@@ -53,3 +53,26 @@ ejecutar_ec2() {
         return 1
     fi
 }
+
+# Función para ejecutar backup S3
+ejecutar_backup_s3() {
+    local directorio=$1
+    local bucket=$2
+    
+    log "☁️  Ejecutando backup S3"
+    
+    if [ -z "$directorio" ] || [ -z "$bucket" ]; then
+        log "❌ Se requieren directorio y bucket para el backup"
+        return 1
+    fi
+    
+    bash s3/backup_s3.sh "$directorio" "$bucket"
+    
+    if [ $? -eq 0 ]; then
+        log "✅ Backup S3 completado exitosamente"
+        return 0
+    else
+        log "❌ Error en backup S3"
+        return 1
+    fi
+}
