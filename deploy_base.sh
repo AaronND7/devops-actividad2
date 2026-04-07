@@ -24,3 +24,32 @@ cargar_configuracion() {
         return 1
     fi
 }
+
+# Función para ejecutar script EC2
+ejecutar_ec2() {
+    local accion=$1
+    local instance_id=$2
+    
+    log "🖥️  Ejecutando operación EC2: $accion"
+    
+    if [ "$accion" = "listar" ]; then
+        python3 ec2/gestionar_ec2.py listar --region $REGION
+    elif [ "$accion" = "iniciar" ]; then
+        python3 ec2/gestionar_ec2.py iniciar --instance-id "$instance_id" --region $REGION
+    elif [ "$accion" = "detener" ]; then
+        python3 ec2/gestionar_ec2.py detener --instance-id "$instance_id" --region $REGION
+    elif [ "$accion" = "terminar" ]; then
+        python3 ec2/gestionar_ec2.py terminar --instance-id "$instance_id" --region $REGION
+    else
+        log "❌ Acción EC2 no reconocida: $accion"
+        return 1
+    fi
+    
+    if [ $? -eq 0 ]; then
+        log "✅ Operación EC2 completada exitosamente"
+        return 0
+    else
+        log "❌ Error en operación EC2"
+        return 1
+    fi
+}
