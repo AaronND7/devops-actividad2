@@ -1,12 +1,12 @@
-# 🚀 Actividad 2: Automatización y Despliegue Controlado en AWS con Enfoque DevOps
+# Actividad 2: Automatización y Despliegue Controlado en AWS con Enfoque DevOps
 
-## 🎯 Objetivo
+## Objetivo
 Diseñar e implementar una solución de automatización en AWS que integre gestión de instancias EC2, respaldos S3, control de versiones y simulación CI/CD.
 
-## � Descripción del Proyecto
+## Descripción del Proyecto
 Este proyecto implementa un flujo DevOps completo que automatiza la gestión de infraestructura en AWS mediante scripts de Python y Bash. Incluye gestión de instancias EC2, backups automáticos a S3, control de versiones con Git y GitHub, y un orquestador que simula un pipeline CI/CD.
 
-## �📁 Estructura del Proyecto
+## Estructura del Proyecto
 ```
 project-devops/
 │
@@ -25,7 +25,7 @@ project-devops/
 └── README.md                  # Documentación del proyecto
 ```
 
-## 🌿 Flujo Git
+## Flujo Git
 - `main` → versión estable (producción)
 - `develop` → integración (staging)
 - `feature/*` → desarrollo de funcionalidades
@@ -37,14 +37,14 @@ project-devops/
 4. Merge a `develop`
 5. Merge a `main`
 
-## ⚙️ Requisitos
+## Requisitos
 - AWS CLI configurado
 - Python 3 con boto3 instalado
 - Git configurado
 - GitHub CLI (gh) instalado
 - Acceso a servicios AWS (EC2, S3)
 
-## 🚀 Instrucciones de Uso
+## Instrucciones de Uso
 
 ### Configuración inicial
 ```bash
@@ -92,10 +92,10 @@ bash s3/backup_s3.sh ./data mi-bucket-devops
 ./deploy.sh iniciar i-1234567890abcdef0
 
 # Solo backup S3
-./deploy.sh listar i-1234567890abcdef0 ./data mi-bucket-devops
+./deploy.sh backup i-1234567890abcdef0 ./data mi-bucket-devops
 ```
 
-## � Ejemplos de uso prácticos
+##  Ejemplos de uso prácticos
 
 ### Escenario 1: Inicializar instancia y hacer backup
 ```bash
@@ -121,10 +121,10 @@ python3 ec2/gestionar_ec2.py listar
 bash s3/backup_s3.sh ./logs mi-logs-bucket
 
 # 3. Orquestación completa
-./deploy.sh listar i-0a204a4a3b31776da ./logs mi-logs-bucket
+./deploy.sh backup i-0a204a4a3b31776da ./logs mi-logs-bucket
 ```
 
-## �🔄 Flujo DevOps Completo
+## Flujo DevOps Completo
 ```
 Feature Development → Git Commits → GitHub Push → 
 Pull Request → Code Review → Merge to Develop → 
@@ -132,7 +132,7 @@ Merge to Main → Deploy.sh Execution →
 AWS Integration (EC2 + S3) → Production
 ```
 
-## 🔧 Configuración de Variables
+## Configuración de Variables
 El archivo `config/config.env` contiene:
 ```bash
 REGION=us-east-1
@@ -143,25 +143,25 @@ LOG_LEVEL=INFO
 LOG_RETENTION_DAYS=30
 ```
 
-## 📊 Logs y Monitoreo
+## Logs y Monitoreo
 - **Logs de deploy:** `logs/deploy_YYYYMMDD_HHMMSS.log`
 - **Logs de backup:** `logs/backup_YYYYMMDD_HHMMSS.log`
 - **Logs de EC2:** Integrados en deploy.sh
 
-## 🚨 Buenas Prácticas Implementadas
-- ✅ Sin hardcoding - todo parametrizado
-- ✅ Commits progresivos y descriptivos
-- ✅ Configuración separada del código
-- ✅ Manejo de errores robusto
-- ✅ Logging centralizado
-- ✅ Scripts reutilizables
+## Buenas Prácticas Implementadas
+- Sin hardcoding - todo parametrizado
+- Commits progresivos y descriptivos
+- Configuración separada del código
+- Manejo de errores robusto
+- Logging centralizado
+- Scripts reutilizables
 
-## 🔗 Enlaces Útiles
+## Enlaces Útiles
 - **Repositorio GitHub:** https://github.com/AaronND7/devops-actividad2
 - **Documentación AWS:** https://docs.aws.amazon.com/
 - **Python Boto3:** https://boto3.amazonaws.com/
 
-## 📞 Soporte
+## Soporte
 Para problemas o preguntas:
 1. Revisar logs en directorio `logs/`
 2. Verificar configuración en `config/config.env`
