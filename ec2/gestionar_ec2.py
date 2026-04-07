@@ -26,16 +26,7 @@ class EC2Manager:
                     state = instance['State']['Name']
                     instance_type = instance['InstanceType']
                     
-                    # Obtener nombre si tiene tags
-                    name = "Sin nombre"
-                    if 'Tags' in instance:
-                        for tag in instance['Tags']:
-                            if tag['Key'] == 'Name':
-                                name = tag['Value']
-                                break
-                    
                     print(f"ID: {instance_id}")
-                    print(f"Nombre: {name}")
                     print(f"Estado: {state}")
                     print(f"Tipo: {instance_type}")
                     print("-" * 30)
